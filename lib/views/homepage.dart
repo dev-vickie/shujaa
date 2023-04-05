@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shujaa/county_list.dart';
+import 'package:shujaa/views/county_list.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
     _scaleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 100),
     );
     _scaleAnimation = Tween(
       begin: 1.0,

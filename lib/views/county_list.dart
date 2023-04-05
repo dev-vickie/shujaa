@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shujaa/fetch_service.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import 'models/county_model.dart';
 
 class CountyList extends StatefulWidget {
   const CountyList({super.key});
@@ -15,8 +12,8 @@ class CountyList extends StatefulWidget {
 class _CountyListState extends State<CountyList> {
   @override
   void initState() {
-    fetchCounties();
     super.initState();
+    fetchCounties();
   }
 
   @override
