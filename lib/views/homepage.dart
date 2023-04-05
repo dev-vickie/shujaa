@@ -1,137 +1,289 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:shujaa/views/county_list.dart';
+import 'package:shujaa/fetch_service.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+import '../models/county_model.dart';
+import 'view_all_counties.dart';
+
+class CountyList extends StatefulWidget {
+  const CountyList({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<CountyList> createState() => _CountyListState();
 }
 
-class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
-  late AnimationController _scaleController;
-  late Animation<double> _scaleAnimation;
-
-  bool hide = false;
+class _CountyListState extends State<CountyList> {
   @override
   void initState() {
     super.initState();
-
-    _scaleController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-    );
-    _scaleAnimation = Tween(
-      begin: 1.0,
-      end: 38.0,
-    ).animate(_scaleController)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          Navigator.pushReplacement(
-            context,
-            PageTransition(
-              child: const CountyList(),
-              type: PageTransitionType.fade,
-            ),
-          );
-        }
-      });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/splash.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              colors: [
-                Colors.black.withOpacity(0.9),
-                Colors.black.withOpacity(0.4),
-              ],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "KARIBU KENYA",
-                  style: GoogleFonts.spaceGrotesk(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 400,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/kenyaflag.jpeg"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Wewe ni Shujaa!",
-                  style: GoogleFonts.spaceGrotesk(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(
-                  height: 100,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      hide = true;
-                    });
-                    _scaleController.forward();
-                  },
-                  child: AnimatedBuilder(
-                    animation: _scaleController,
-                    builder: (context, child) => Transform.scale(
-                      scale: _scaleAnimation.value,
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.white,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      color: Colors.transparent.withOpacity(0.3),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomRight,
+                          colors: [
+                            Colors.black.withOpacity(0.8),
+                            Colors.black.withOpacity(0.2),
+                          ],
                         ),
-                        child: Center(
-                          child: hide == false
-                              ? Text(
-                                  "Welcome to Shujaa App",
-                                  style: GoogleFonts.spaceGrotesk(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.menu,
+                                    color: Colors.white,
                                   ),
-                                )
-                              : Container(),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.flag,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Get all counties info.",
+                                    style: GoogleFonts.spaceGrotesk(
+                                      fontSize: 38,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ViewAllCounties(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          "VIEW all",
+                                          style: GoogleFonts.spaceGrotesk(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Regions",
+                          style: GoogleFonts.spaceGrotesk(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text("All"),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 150,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          makeRegion(
+                            image: "assets/Nairobi.jpg",
+                            title: "Nairobi",
+                          ),
+                          makeRegion(
+                              image: "assets/Mombasa.jpg", title: "Coast"),
+                          makeRegion(
+                              image: "assets/Central.jpg", title: "Central"),
+                          makeRegion(
+                              image: "assets/splash.jpg", title: "Coast"),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Another category here",
+                          style: GoogleFonts.spaceGrotesk(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text("All", style: GoogleFonts.spaceGrotesk()),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 150,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          makeBestCategory(
+                              image: "assets/splash.jpg", title: "Nairobi"),
+                          makeBestCategory(
+                              image: "assets/splash.jpg", title: "Coast"),
+                          makeBestCategory(
+                              image: "assets/splash.jpg", title: "Western"),
+                          makeBestCategory(
+                              image: "assets/splash.jpg", title: "Cental"),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
+}
+
+Widget makeRegion({image, title}) {
+  return AspectRatio(
+    aspectRatio: 2 / 2.3,
+    child: Container(
+      margin: const EdgeInsets.only(right: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: AssetImage(
+            image,
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+            begin: Alignment.bottomRight,
+            colors: [
+              Colors.black.withOpacity(0.8),
+              Colors.black.withOpacity(0),
+            ],
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            title,
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget makeBestCategory({image, title}) {
+  return AspectRatio(
+    aspectRatio: 3 / 2.2,
+    child: Container(
+      margin: const EdgeInsets.only(right: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: AssetImage(
+            image,
+          ),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+            begin: Alignment.bottomRight,
+            colors: [
+              Colors.black.withOpacity(0.8),
+              Colors.black.withOpacity(0),
+            ],
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            title,
+            style: GoogleFonts.spaceGrotesk(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
