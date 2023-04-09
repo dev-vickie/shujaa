@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
+import 'models/county_model.dart';
 import 'views/welcome_page.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(CountyAdapter());
   runApp(const MyApp());
 }
 

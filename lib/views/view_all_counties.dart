@@ -130,7 +130,7 @@ class _ViewAllCountiesState extends State<ViewAllCounties> {
                     },
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
+                  return Center(child: Text('Error: ${snapshot.error}'));
                 }
               }
               return Center(child: CircularProgressIndicator());

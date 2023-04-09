@@ -1,10 +1,23 @@
 import 'dart:convert';
+import "package:hive/hive.dart";
 
+part 'county_model.g.dart';
+
+@HiveType(typeId: 0)
 class County {
+
+  @HiveField(0)
   final String name;
+
+  @HiveField(1)
   final String code;
+
+  @HiveField(2)
   final String flagUrl;
+
+  @HiveField(3)
   final String governor;
+
   County({
     required this.name,
     required this.code,
