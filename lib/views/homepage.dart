@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shujaa/fetch_service.dart';
-
-import '../models/county_model.dart';
+import 'package:shujaa/views/auth/signup_screen.dart';
 import 'view_all_counties.dart';
 
 class CountyList extends StatefulWidget {
@@ -13,11 +11,6 @@ class CountyList extends StatefulWidget {
 }
 
 class _CountyListState extends State<CountyList> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,17 +53,18 @@ class _CountyListState extends State<CountyList> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignupScreen(),
+                                      ),
+                                    );
+                                  },
                                   icon: const Icon(
-                                    Icons.menu,
+                                    Icons.person_add,
                                     color: Colors.white,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.flag,
-                                    color: Colors.white,
+                                    size: 28,
                                   ),
                                 ),
                               ],

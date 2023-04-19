@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shujaa/fetch_service.dart';
@@ -75,10 +76,18 @@ class _ViewAllCountiesState extends State<ViewAllCounties> {
                                     height: 110,
                                     decoration: BoxDecoration(
                                       color: Colors.grey[200],
-                                      image: DecorationImage(
-                                        image: NetworkImage(county.flagUrl),
-                                        fit: BoxFit.fill,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: county.flagUrl,
+                                      fit: BoxFit.cover,
+                                      progressIndicatorBuilder:
+                                          (context, url, downloadProgress) =>
+                                              Center(
+                                        child: CircularProgressIndicator(
+                                            value: downloadProgress.progress),
                                       ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     ),
                                   ),
                                 ),
